@@ -1,4 +1,5 @@
-package com.example.productservice.models;
+package com.example.productservice.dtos;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class FakeStoreCategoryDto {
     String title;
 }

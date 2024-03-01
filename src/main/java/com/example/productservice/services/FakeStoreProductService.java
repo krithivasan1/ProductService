@@ -1,5 +1,6 @@
 package com.example.productservice.services;
 
+import com.example.productservice.dtos.FakeStoreCategoryDto;
 import com.example.productservice.dtos.FakeStoreProductDto;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
@@ -47,6 +48,18 @@ public class FakeStoreProductService implements ProductService {
 
         return listProduct;
 
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        List<String> fakeStoreCategoryDtoList =restTemplate.getForObject("https://fakestoreapi.com/products/categories",List.class);
+        List<Category> categoryList = new ArrayList<Category>();
+        for(String fakeStoreCategoryDto:fakeStoreCategoryDtoList){
+            Category tempCategory = new Category();
+            tempCategory.setTitle(fakeStoreCategoryDto);
+            categoryList.add(tempCategory);
+        }
+        return categoryList;
     }
 
     @Override

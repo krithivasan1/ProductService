@@ -1,5 +1,6 @@
 package com.example.productservice.services;
 
+import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,11 @@ public class OwnDatabaseProductService implements ProductService{
 
     @Override
     public List<Product> getProducts(String category) {
+        return null;
+    }
+
+    @Override
+    public List<Category> getCategories() {
         return null;
     }
 
