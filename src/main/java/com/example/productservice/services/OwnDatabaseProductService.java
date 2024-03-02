@@ -13,12 +13,27 @@ public class OwnDatabaseProductService implements ProductService{
     }
 
     @Override
+    public Product deleteProduct(Long productId) {
+        return null;
+    }
+
+    @Override
     public List<Product> getProducts(String category) {
         return null;
     }
 
     @Override
     public List<Category> getCategories() {
+        return null;
+    }
+
+    @Override
+    public List<Product> getProducts() {
+        return null;
+    }
+
+    @Override
+    public Product updateProduct(Long productId,Product product) {
         return null;
     }
 
