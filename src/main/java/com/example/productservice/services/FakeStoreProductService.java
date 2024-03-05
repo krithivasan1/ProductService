@@ -2,8 +2,10 @@ package com.example.productservice.services;
 
 import com.example.productservice.dtos.FakeStoreCategoryDto;
 import com.example.productservice.dtos.FakeStoreProductDto;
+import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,19 +22,21 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product getSingleProduct(Long productId) {
-        FakeStoreProductDto fakeStoreProduct = restTemplate.getForObject("https://fakestoreapi.com/products/" + productId, FakeStoreProductDto.class);
-        // Now we need to convert the DTO to product .. as the client needs the product and not the DTO
-
-        return fakeStoreProduct.toProduct();
+    public Product getSingleProduct(Long productId) throws ProductNotFoundException{
+        ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/" + productId, FakeStoreProductDto.class);
+        FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
+        if(fakeStoreProductDto==null){
+            throw new ProductNotFoundException("Product with Id "+productId +" not found");
+        }
+        return fakeStoreProductDto.toProduct();
     }
 
     @Override
-    public Product  deleteProduct(Long productId) {
-        Map<String,String> params = new HashMap<String,String>();
-        params.put("id",productId.toString());
-        Product product  = getSingleProduct(productId);
-        restTemplate.delete("https://fakestoreapi.com/products/"+productId,params);
+    public Product deleteProduct(Long productId) throws ProductNotFoundException{
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("id", productId.toString());
+        Product product = getSingleProduct(productId);
+        restTemplate.delete("https://fakestoreapi.com/products/" + productId, params);
         return product;
     }
 
@@ -74,6 +78,17 @@ public class FakeStoreProductService implements ProductService {
     @Override
     public List<Product> getProducts() {
         List<Product> listProduct = new ArrayList<Product>();
+        FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+        for (FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
+            listProduct.add(fakeStoreProductDto.toProduct());
+
+        }
+        return listProduct;
+    }
+
+    // another way of getting the products
+    public List<Product> getProducts1() {
+        List<Product> listProduct = new ArrayList<Product>();
         List<LinkedHashMap<String, String>> listFakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products", List.class);
         for (LinkedHashMap<String, String> linkedHashMap : listFakeStoreProductDto) {
             Product tempProduct = new Product();
@@ -92,9 +107,9 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId,Product product) {
-        Map<String,String> params = new HashMap<String,String>();
-        params.put("id",productId.toString());
+    public Product updateProduct(Long productId, Product product) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("id", productId.toString());
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setId(productId.intValue());
         fakeStoreProductDto.setTitle(product.getTitle());
@@ -102,7 +117,7 @@ public class FakeStoreProductService implements ProductService {
         fakeStoreProductDto.setCategory(product.getCategory().getTitle());
         fakeStoreProductDto.setDescription(product.getDescription());
         fakeStoreProductDto.setImage(product.getImage());
-        restTemplate.put("https://fakestoreapi.com/products/"+product.getId(),fakeStoreProductDto,params);
+        restTemplate.put("https://fakestoreapi.com/products/" + product.getId(), fakeStoreProductDto, params);
         return product;
     }
 

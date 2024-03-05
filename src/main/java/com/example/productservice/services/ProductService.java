@@ -1,5 +1,6 @@
 package com.example.productservice.services;
 
+import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,7 @@ import java.util.List;
 
 
 public interface ProductService {
-    Product getSingleProduct(Long productId);
+    Product getSingleProduct(Long productId) throws ProductNotFoundException;
 
     List<Product> getProducts(String category);
 
@@ -18,7 +19,7 @@ public interface ProductService {
 
     Product updateProduct(Long productId,Product product);
 
-    Product deleteProduct(Long productId);
+    Product deleteProduct(Long productId) throws ProductNotFoundException;
 
     Product createProduct(String title,String description,String category,Long price,String image);
 

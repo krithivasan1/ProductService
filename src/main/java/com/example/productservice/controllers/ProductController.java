@@ -1,6 +1,7 @@
 package com.example.productservice.controllers;
 
 import com.example.productservice.dtos.CreateProductRequestDto;
+import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public Product getProductDetails(@PathVariable("id") Long productId) {
+    public Product getProductDetails(@PathVariable("id") Long productId) throws ProductNotFoundException {
         return productService.getSingleProduct(productId);
     }
 
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{productId}")
-    public Product deleteProduct(@PathVariable("productId") Long productId) {
+    public Product deleteProduct(@PathVariable("productId") Long productId) throws ProductNotFoundException {
 
          return productService.deleteProduct(productId);
     }
@@ -60,10 +61,5 @@ public class ProductController {
         return productService.updateProduct(productId,product);
     }
 
-    public void getAllProducts() {
-    }
-
-    public void updateProduct() {
-    }
 
 }
