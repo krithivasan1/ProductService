@@ -47,7 +47,7 @@ public class FakeStoreProductService implements ProductService {
         List<LinkedHashMap<String, String>> listFakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products/category/" + category, List.class);
         for (LinkedHashMap<String, String> linkedHashMap : listFakeStoreProductDto) {
             Product tempProduct = new Product();
-            tempProduct.setId(Integer.parseInt((String.valueOf(linkedHashMap.get("id")))));
+            tempProduct.setId(Long.parseLong((String.valueOf(linkedHashMap.get("id")))));
             tempProduct.setDescription(linkedHashMap.get("description"));
             tempProduct.setTitle(linkedHashMap.get("title"));
             tempProduct.setPrice(Double.parseDouble(String.valueOf(linkedHashMap.get("price"))));
@@ -92,7 +92,7 @@ public class FakeStoreProductService implements ProductService {
         List<LinkedHashMap<String, String>> listFakeStoreProductDto = restTemplate.getForObject("https://fakestoreapi.com/products", List.class);
         for (LinkedHashMap<String, String> linkedHashMap : listFakeStoreProductDto) {
             Product tempProduct = new Product();
-            tempProduct.setId(Integer.parseInt((String.valueOf(linkedHashMap.get("id")))));
+            tempProduct.setId(Long.parseLong((String.valueOf(linkedHashMap.get("id")))));
             tempProduct.setDescription(linkedHashMap.get("description"));
             tempProduct.setTitle(linkedHashMap.get("title"));
             tempProduct.setPrice(Double.parseDouble(String.valueOf(linkedHashMap.get("price"))));
@@ -111,7 +111,7 @@ public class FakeStoreProductService implements ProductService {
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", productId.toString());
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        fakeStoreProductDto.setId(productId.intValue());
+        fakeStoreProductDto.setId(productId.longValue());
         fakeStoreProductDto.setTitle(product.getTitle());
         fakeStoreProductDto.setPrice(Double.valueOf(product.getPrice()).longValue());
         fakeStoreProductDto.setCategory(product.getCategory().getTitle());

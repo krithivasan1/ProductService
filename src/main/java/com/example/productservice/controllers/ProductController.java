@@ -5,6 +5,7 @@ import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
 
-    ProductController(ProductService productService) {
+
+    ProductController(@Qualifier("SelfProductService") ProductService productService) {
         this.productService = productService;
 
     }
@@ -55,8 +57,12 @@ public class ProductController {
         product.setDescription(request.getDescription());
         Category category = new Category();
         category.setTitle(request.getCategory());
-        product.setCategory(category);
+        product.setImage(request.getImage());
+        if(category.getTitle()!=null) {
+            product.setCategory(category);
+        }
         product.setTitle(request.getTitle());
+        if(request.getPrice()!=null)
         product.setPrice(request.getPrice());
         return productService.updateProduct(productId,product);
     }

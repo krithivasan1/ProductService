@@ -9,19 +9,17 @@ import java.util.List;
 
 
 public interface ProductService {
+    Product createProduct(String title,String description,String category,Long price,String image);
     Product getSingleProduct(Long productId) throws ProductNotFoundException;
-
+    List<Product> getProducts();
+    List<Category> getCategories();
     List<Product> getProducts(String category);
 
-    List<Category> getCategories();
-
-    List<Product> getProducts();
 
     Product updateProduct(Long productId,Product product);
 
     Product deleteProduct(Long productId) throws ProductNotFoundException;
 
-    Product createProduct(String title,String description,String category,Long price,String image);
 
 
 }

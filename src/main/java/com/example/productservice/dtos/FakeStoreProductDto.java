@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FakeStoreProductDto {
-    int id;
+    Long id;
     String title;
     long price;
     String description;
