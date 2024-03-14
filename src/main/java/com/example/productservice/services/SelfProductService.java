@@ -39,9 +39,10 @@ public class SelfProductService implements ProductService {
 
     @Override
     public List<Product> getProducts(String category) {
+        // JPA query method with double db calls.
         Category newCategory = categoryRepository.findByTitle(category);
         return productRepository.findByCategory(newCategory);
-        // another way
+        // another way - Query methods with the single db call
         // return productRepository.findByCategory_Title(category);
     }
 
