@@ -3,6 +3,7 @@ package com.example.productservice.services;
 import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,14 @@ public interface ProductService {
     List<Product> getProducts(String category);
 
 
+
     Product updateProduct(Long productId,Product product);
 
     Product deleteProduct(Long productId) throws ProductNotFoundException;
+    // get the products with Page
+    Page<Product> getProductsWithPage(Integer pageSize,Integer pageNumber,String sort);
+
+    boolean generateProductData();
 
 
 

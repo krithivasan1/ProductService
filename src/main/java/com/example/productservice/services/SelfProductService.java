@@ -4,10 +4,16 @@ import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.repositories.CategoryRepository;
 import com.example.productservice.repositories.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service("SelfProductService")
 public class SelfProductService implements ProductService {
@@ -44,6 +50,39 @@ public class SelfProductService implements ProductService {
         return productRepository.findByCategory(newCategory);
         // another way - Query methods with the single db call
         // return productRepository.findByCategory_Title(category);
+    }
+
+    @Override
+    public Page<Product> getProductsWithPage(Integer pageSize, Integer pageNumber, String sort) {
+        Pageable pageable = null;
+        if (sort != null) {
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
+        } else {
+            pageable = PageRequest.of(pageNumber, pageSize);//, Sort.Direction.ASC, "price");
+
+        }
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public boolean generateProductData() {
+
+        List<Product> productList = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 1; i <= 20; i++) {
+            String title = "Computer Product " + i;
+            double price = random.nextDouble(1000); // Example price (can be adjusted)
+            String image = "image" + i + ".jpg"; // Example image name (can be adjusted)
+            String description = "High-quality computer product #" + i + " for your computing needs."; // Example description (can be adjusted)
+            String category = "Computers"; // Example category (can be adjusted)
+            Category category1 = new Category();
+            category1.setTitle(category);
+
+            // Create a new ComputerProduct object and add it to the list
+            productList.add(new Product(title, description, price, image, category1));
+        }
+        productRepository.saveAll(productList);
+        return true;
     }
 
     @Override

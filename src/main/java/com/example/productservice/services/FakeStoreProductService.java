@@ -5,6 +5,7 @@ import com.example.productservice.dtos.FakeStoreProductDto;
 import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -41,6 +42,11 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
+    public Page<Product> getProductsWithPage(Integer pageSize, Integer pageNumber, String sort) {
+        return null;
+    }
+
+    @Override
     public List<Product> getProducts(String category) {
 
         List<Product> listProduct = new ArrayList<Product>();
@@ -61,6 +67,13 @@ public class FakeStoreProductService implements ProductService {
 
         return listProduct;
 
+    }
+
+
+
+    @Override
+    public boolean generateProductData() {
+        return false;
     }
 
     @Override
